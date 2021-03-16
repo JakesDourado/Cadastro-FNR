@@ -1,0 +1,30 @@
+.main-index {
+  display: grid;
+
+  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 60px auto;
+  grid-template-rows: 60px;
+
+  grid-template-areas:
+    "nav nav"
+    "section article";
+}
+.main-index nav {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.main-index nav h2 {
+  color: white;
+  margin-left: 10px;
+  font: 2rem Nunito;
+  margin: 11px 20px 7px 20px;
+}
+
+.main-index nav svg {
+  color: white;
+}
+nav {
+    background: rgb(82, 82, 226);
+    grid-area: nav;
+  }
