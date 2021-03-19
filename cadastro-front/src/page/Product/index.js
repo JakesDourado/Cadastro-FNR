@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { Card, Button, Form, Table } from "react-bootstrap";
+import { Card, Button, Form, Table, Alert } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import api from "../../services/api";
 import "./styles.css";
 
 export default function Product() {
   const [products, setProducts] = useState([]);
-
 
   const initialState = {
     produto: "",
@@ -22,14 +21,10 @@ export default function Product() {
   }, []);
 
   async function handleSubmit(e) {
-   e.preventDefault();
-    await api.post("add-produto", data);
-    console.log(products);
+    e.preventDefault();
+    const response = await api.post("add-produto", data);
     setData(initialState);
-    await api.get("lista-produto").then((response) => {
-      setProducts(response.data);
-    });
-  
+    setProducts([...products, response.data]);
   }
 
   return (
@@ -73,12 +68,12 @@ export default function Product() {
                 />
               </Form.Group>
             </Form.Row>
-            <Button   type="submit" variant="primary">
+            <Button type="submit" variant="primary">
               SALVAR
             </Button>
           </Card.Body>
         </Card>
-        </Form>
+      </Form>
       <Card>
         <Card.Header as="h5">LISTA DE PRODUTOS</Card.Header>
 
@@ -138,7 +133,6 @@ export default function Product() {
           </Table>
         </Card.Body>
       </Card>
-  
     </>
   );
 }
