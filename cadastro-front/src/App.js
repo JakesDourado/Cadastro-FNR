@@ -1,8 +1,10 @@
 import React from "react";
+import api from './services/api'
 import { BrowserRouter } from "react-router-dom";
 import Navibar from "./components/template/Navbar";
 import "./global.css";
 import Main from "./page";
+
 
 import Routes from "./routes";
 
