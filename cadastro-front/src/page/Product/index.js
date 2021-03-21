@@ -1,12 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { Card, Button, Form, Table } from "react-bootstrap";
-import { Link, useParams, useHistory } from "react-router-dom";
+import { Link} from "react-router-dom";
 import api from "../../services/api";
 import "./styles.css";
 
 export default function Product() {
-  const { id } = useParams();
-  const history = useHistory();
 
   const [products, setProducts] = useState([]);
 
@@ -35,10 +33,7 @@ export default function Product() {
 
   async function editProduct(id) {
     try {
-      //   await api.put(`produto/${id}`);
       setData(products.filter((product) => product.id === id)[0]);
-
-       // history.push(`product/${id}`)
     } catch (err) {
       alert("erro");
     }
@@ -47,45 +42,24 @@ export default function Product() {
     e.preventDefault();
 
     try {
-   
       if( data.id !== ""){
         const response = await api.put(`produto/${data.id}`, data)
-       setProducts( products.map(element => element.id === response.data.id ? Object.assign({}, element,  {
+       setProducts( products.map(e => e.id === response.data.id ? Object.assign({}, e,  {
         id: response.data.id,
         produto: response.data.produto,
         qnt: response.data.qnt,
         valor: response.data.valor,
-      }) : element))
+      }) : e))
         setData(initialState)
       }else{
-      
         const response = await api.post(`produto`, data)
-  
         setProducts([...products, response.data]);
         setData(initialState)
       }
-     
-     
-      
-
-        
         } catch (err) {
           alert("erro");
         }
       }
-
-      // const response = await api.post("produto", data);
-      // setProducts([...products, response.data]);
-      // setData(initialState);
-
-      /* const method = id ? "patch" : "post"
-        const response = await api[method](`produto/${id ? id : ""}`, data)
-        
-        setProducts([...products, response.data]);
-        setData(initialState)
-        history.push("/produto")*/
-  
-  
 
   return (
     <>
