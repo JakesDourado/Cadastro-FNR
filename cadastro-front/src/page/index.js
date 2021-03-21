@@ -1,6 +1,7 @@
 import React from "react";
 
 import { Link, Switch, Route } from "react-router-dom";
+
 import Product from "./Product";
 import Welcom from "./Welcome";
 
@@ -45,6 +46,7 @@ export default function Main() {
               <Route path="/" exact component={Welcom} />
 
               <Route path="/produto" exact component={Product} />
+           
             </Switch>
           </article>
     

@@ -1,13 +1,17 @@
 import React, { useEffect, useState } from "react";
-import { Card, Button, Form, Table, Alert } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import { Card, Button, Form, Table } from "react-bootstrap";
+import { Link, useParams, useHistory } from "react-router-dom";
 import api from "../../services/api";
 import "./styles.css";
 
 export default function Product() {
+  const { id } = useParams();
+  const history = useHistory();
+
   const [products, setProducts] = useState([]);
 
   const initialState = {
+    id: "",
     produto: "",
     qnt: "",
     valor: "",
@@ -20,25 +24,68 @@ export default function Product() {
     });
   }, []);
 
-
-
   async function deleteProduct(id) {
     try {
-        await api.delete(`delete-produto/${id}`)
-        setProducts(products.filter((product) => product.id !== id));
+      await api.delete(`delete-produto/${id}`);
+      setProducts(products.filter((product) => product.id !== id));
     } catch (err) {
-        alert('erro')
+      alert("erro");
     }
-}
+  }
 
+  async function editProduct(id) {
+    try {
+      //   await api.put(`produto/${id}`);
+      setData(products.filter((product) => product.id === id)[0]);
 
-
+       // history.push(`product/${id}`)
+    } catch (err) {
+      alert("erro");
+    }
+  }
   async function handleSubmit(e) {
     e.preventDefault();
-    const response = await api.post("add-produto", data);
-    setData(initialState);
-    setProducts([...products, response.data]);
-  }
+
+    try {
+   
+      if( data.id !== ""){
+        const response = await api.put(`produto/${data.id}`, data)
+       setProducts( products.map(element => element.id === response.data.id ? Object.assign({}, element,  {
+        id: response.data.id,
+        produto: response.data.produto,
+        qnt: response.data.qnt,
+        valor: response.data.valor,
+      }) : element))
+        setData(initialState)
+      }else{
+      
+        const response = await api.post(`produto`, data)
+  
+        setProducts([...products, response.data]);
+        setData(initialState)
+      }
+     
+     
+      
+
+        
+        } catch (err) {
+          alert("erro");
+        }
+      }
+
+      // const response = await api.post("produto", data);
+      // setProducts([...products, response.data]);
+      // setData(initialState);
+
+      /* const method = id ? "patch" : "post"
+        const response = await api[method](`produto/${id ? id : ""}`, data)
+        
+        setProducts([...products, response.data]);
+        setData(initialState)
+        history.push("/produto")*/
+  
+  
 
   return (
     <>
@@ -109,7 +156,7 @@ export default function Product() {
                     <td>{product.valor}</td>
                     <td>
                       <span className="just-icon">
-                        <Link>
+                        <Link onClick={() => editProduct(product.id)}>
                           <svg
                             xmlns="http://www.w3.org/2000/svg"
                             width="16"
