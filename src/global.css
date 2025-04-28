@@ -1,0 +1,40 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background: rgb(240, 239, 239);
+}
+main {
+  display: flex;
+}
+
+section {
+  background: rgb(53, 63, 105);
+  width: 70px;
+}
+section a {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+  list-style: none;
+}
+section a li {
+  text-decoration: none;
+  padding: 10px;
+}
+section a li svg {
+  color: white;
+  transition: 0.2s;
+}
+section svg:hover {
+  color: rgb(198, 208, 243);
+}
+
+article {
+ 
+  width: 100vw;
+  height: 100vh;
+  padding: 20px;
+}

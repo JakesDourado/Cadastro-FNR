@@ -1,0 +1,56 @@
+{
+  "products": [
+    {
+      "id": "6r8",
+      "produto": "Notebook",
+      "qnt": "100",
+      "valor": "3500.00",
+      "categoria_id": "1s55"
+    },
+    {
+      "id": "6r9",
+      "produto": "Smartphone",
+      "qnt": "15",
+      "valor": "2000.00",
+      "categoria_id": "1s55"
+    },
+    {
+      "id": "6s4",
+      "produto": "Tablet",
+      "qnt": "8",
+      "valor": "1500.00",
+      "categoria_id": "1s55"
+    },
+    {
+      "id": "4b0d",
+      "produto": "coca cola",
+      "qnt": "10",
+      "valor": "10",
+      "categoria_id": "dc77"
+    },
+    {
+      "id": "cf26",
+      "produto": "água",
+      "qnt": "10",
+      "valor": "2",
+      "categoria_id": "dc77"
+    }
+  ],
+  "categories": [
+    {
+      "id": "1s55",
+      "nome": "Eletrônicos",
+      "descricao": "Produtos eletrônicos em geral"
+    },
+    {
+      "id": "dc77",
+      "nome": "bebidas",
+      "descricao": "alcool"
+    },
+    {
+      "id": "ddef",
+      "nome": "massa",
+      "descricao": "x"
+    }
+  ]
+}

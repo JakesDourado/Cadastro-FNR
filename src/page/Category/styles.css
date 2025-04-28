@@ -1,0 +1,28 @@
+.marg-botton {
+    margin-bottom: 30px;
+}
+
+.btn-floating {
+    margin: 0 5px;
+}
+
+.descricao-cell {
+    max-width: 300px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.btn-floating svg {
+    margin-top: 5px;
+}
+
+button {
+    display: flex;
+    width: 100%;
+    font-size: 1.2rem !important;
+}
+
+.just-icon svg {
+    margin: 0 15px 0 0;
+} 
