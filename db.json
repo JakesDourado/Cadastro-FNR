@@ -1,42 +1,18 @@
 {
-  "categories": [
-    {
-      "id": 1,
-      "name": "Eletrônicos",
-      "description": "Produtos eletrônicos em geral"
-    },
-    {
-      "id": 2,
-      "name": "Informática",
-      "description": "Produtos de informática e acessórios"
-    },
-    {
-      "name": "Bebida",
-      "description": "Não alcoólica ",
-      "id": 3
-    }
-  ],
   "products": [
     {
-      "name": "Notebook",
-      "quantity": 10,
-      "value": 3500,
-      "categoryId": "2",
+      "name": "ddd",
+      "quantity": 3,
+      "value": 10,
+      "categoryId": "1",
       "id": 1
-    },
+    }
+  ],
+  "categories": [
     {
-      "name": "Smartphone",
-      "quantity": 15,
-      "value": 2000,
-      "categoryId": "2",
-      "id": 2
-    },
-    {
-      "name": "Coca Cola",
-      "quantity": 2,
-      "value": 20,
-      "categoryId": "3",
-      "id": 3
+      "name": "ddd",
+      "description": "",
+      "id": 1
     }
   ]
 }

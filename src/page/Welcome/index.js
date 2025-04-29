@@ -13,7 +13,7 @@ export default function Welcome() {
         <Button 
           variant="primary" 
           className="menu-button"
-          onClick={() => navigate("/produto")}
+          onClick={() => navigate("/products")}
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
