@@ -1,0 +1,142 @@
+.product-container {
+    padding: 20px;
+}
+
+.margin-bottom {
+    margin-bottom: 30px;
+}
+
+.product-button {
+    display: flex;
+    width: 100%;
+    font-size: 1.2rem !important;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+    border-radius: 5px;
+    transition: all 0.3s ease;
+}
+
+.product-button:hover {
+    opacity: 0.9;
+    transform: translateY(-2px);
+}
+
+.icon-with-text svg {
+    margin: 0 15px 0 0;
+}
+
+/* Estilos para a tabela */
+.product-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+.product-table th,
+.product-table td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+.product-table th {
+    background-color: #f8f9fa;
+    font-weight: 600;
+}
+
+/* Estilos para os botões de ação */
+.action-button {
+    padding: 6px 12px;
+    margin: 0 5px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.edit-button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+}
+
+.delete-button {
+    background-color: #dc3545;
+    color: white;
+    border: none;
+}
+
+.header-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.header-actions h2 {
+  margin: 0;
+}
+
+.just-icon {
+  display: flex;
+  gap: 10px;
+}
+
+.just-icon button {
+  padding: 0;
+  border: none;
+  background: none;
+  cursor: pointer;
+}
+
+.just-icon button:hover {
+  opacity: 0.7;
+}
+
+.just-icon button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.button-group {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+  margin-top: 20px;
+}
+
+.text-center {
+  text-align: center;
+  padding: 20px;
+}
+
+/* Estilos para o modal */
+.modal-content {
+  border-radius: 8px;
+}
+
+.modal-header {
+  background-color: #f8f9fa;
+  border-bottom: 1px solid #dee2e6;
+}
+
+.modal-body {
+  padding: 20px;
+}
+
+/* Estilos para os inputs */
+.form-control:focus {
+  border-color: #80bdff;
+  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+
+/* Estilos para mensagens de erro e sucesso */
+.alert {
+  margin-bottom: 20px;
+  border-radius: 8px;
+}
+
+.alert-dismissible .close {
+  padding: 0.75rem 1.25rem;
+}
+
+
