@@ -1,28 +1,42 @@
 {
-  "produtos": [
+  "categories": [
     {
       "id": 1,
-      "produto": "Notebook",
-      "qnt": 10,
-      "valor": 3500
+      "name": "Eletrônicos",
+      "description": "Produtos eletrônicos em geral"
     },
     {
       "id": 2,
-      "produto": "Mouse",
-      "qnt": 50,
-      "valor": 89.9
+      "name": "Informática",
+      "description": "Produtos de informática e acessórios"
     },
     {
-      "id": 3,
-      "produto": "Teclado",
-      "qnt": 30,
-      "valor": 199.9
+      "name": "Bebida",
+      "description": "Não alcoólica ",
+      "id": 3
+    }
+  ],
+  "products": [
+    {
+      "name": "Notebook",
+      "quantity": 10,
+      "value": 3500,
+      "categoryId": "2",
+      "id": 1
     },
     {
-      "produto": "casa",
-      "qnt": 1,
-      "valor": 1000,
-      "id": 4
+      "name": "Smartphone",
+      "quantity": 15,
+      "value": 2000,
+      "categoryId": "2",
+      "id": 2
+    },
+    {
+      "name": "Coca Cola",
+      "quantity": 2,
+      "value": 20,
+      "categoryId": "3",
+      "id": 3
     }
   ]
 }

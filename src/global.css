@@ -24,9 +24,20 @@ button {
   padding: 0 20px;
 }
 
-main {
+.main-container {
   display: flex;
   min-height: 100vh;
+}
+
+.content {
+  flex: 1;
+  padding: 20px;
+  margin-left: 250px;
+  transition: margin-left 0.3s ease;
+}
+
+.content.sidebar-collapsed {
+  margin-left: 70px;
 }
 
 section {
@@ -81,6 +92,15 @@ article {
     margin-left: 60px;
     padding: 15px;
   }
+
+  .content {
+    margin-left: 0;
+    padding: 15px;
+  }
+  
+  .content.sidebar-collapsed {
+    margin-left: 0;
+  }
 }
 
 @media (max-width: 480px) {
@@ -96,5 +116,9 @@ article {
 
   section a li {
     padding: 8px;
+  }
+
+  .content {
+    padding: 10px;
   }
 }

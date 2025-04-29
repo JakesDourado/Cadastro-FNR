@@ -7,6 +7,7 @@ import "./styles.css";
 export default function Product() {
   const navigate = useNavigate();
   const [products, setProducts] = useState([]);
+  const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(null);
@@ -18,6 +19,7 @@ export default function Product() {
     produto: "",
     qnt: "",
     valor: "",
+    categoryId: ""
   };
 
   const [data, setData] = useState(initialState);
@@ -25,19 +27,32 @@ export default function Product() {
 
   useEffect(() => {
     fetchProducts();
+    fetchCategories();
   }, []);
 
   const fetchProducts = async () => {
     try {
       setLoading(true);
       setError(null);
-      const response = await api.get("/produtos");
+      const response = await api.get("/products");
+      console.log("Produtos recebidos:", response.data);
       setProducts(response.data);
     } catch (err) {
       setError("Erro ao carregar produtos. Verifique se o servidor está rodando.");
       console.error("Erro ao carregar produtos:", err);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const fetchCategories = async () => {
+    try {
+      const response = await api.get("/categories");
+      console.log("Categorias recebidas:", response.data);
+      setCategories(response.data);
+    } catch (err) {
+      setError("Erro ao carregar categorias. Verifique se o servidor está rodando.");
+      console.error("Erro ao carregar categorias:", err);
     }
   };
 
@@ -48,6 +63,7 @@ export default function Product() {
       errors.qnt = "Quantidade deve ser um número maior que zero";
     if (!data.valor || isNaN(data.valor) || data.valor <= 0) 
       errors.valor = "Valor deve ser um número maior que zero";
+    if (!data.categoryId) errors.categoryId = "Categoria é obrigatória";
     
     setValidationErrors(errors);
     return Object.keys(errors).length === 0;
@@ -71,20 +87,26 @@ export default function Product() {
       setSuccess(null);
 
       if (data.id) {
-        // Atualizar produto existente
-        const response = await api.put(`/produtos/${data.id}`, {
-          produto: data.produto,
-          qnt: parseInt(data.qnt),
-          valor: parseFloat(data.valor)
+        const response = await api.put(`/products/${data.id}`, {
+          name: data.produto,
+          quantity: parseInt(data.qnt),
+          value: parseFloat(data.valor),
+          categoryId: data.categoryId
         });
-        setProducts(products.map(p => p.id === response.data.id ? response.data : p));
+        setProducts(products.map(p => p.id === data.id ? {
+          ...p,
+          name: data.produto,
+          quantity: parseInt(data.qnt),
+          value: parseFloat(data.valor),
+          categoryId: data.categoryId
+        } : p));
         setSuccess("Produto atualizado com sucesso!");
       } else {
-        // Criar novo produto
-        const response = await api.post("/produtos", {
-          produto: data.produto,
-          qnt: parseInt(data.qnt),
-          valor: parseFloat(data.valor)
+        const response = await api.post("/products", {
+          name: data.produto,
+          quantity: parseInt(data.qnt),
+          value: parseFloat(data.valor),
+          categoryId: data.categoryId
         });
         setProducts([...products, response.data]);
         setSuccess("Produto cadastrado com sucesso!");
@@ -103,9 +125,10 @@ export default function Product() {
   const handleEdit = (product) => {
     setData({
       id: product.id,
-      produto: product.produto,
-      qnt: product.qnt,
-      valor: product.valor
+      produto: product.name,
+      qnt: product.quantity,
+      valor: product.value,
+      categoryId: product.categoryId
     });
     setShowModal(true);
   };
@@ -115,7 +138,7 @@ export default function Product() {
 
     try {
       setLoading(true);
-      await api.delete(`/produtos/${id}`);
+      await api.delete(`/products/${id}`);
       setProducts(products.filter(product => product.id !== id));
       setSuccess("Produto excluído com sucesso!");
     } catch (err) {
@@ -130,6 +153,14 @@ export default function Product() {
     setShowModal(false);
     setData(initialState);
     setValidationErrors({});
+  };
+
+  const getCategoryName = (categoryId) => {
+    console.log("Buscando categoria para ID:", categoryId);
+    console.log("Categorias disponíveis:", categories);
+    const category = categories.find(cat => cat.id === parseInt(categoryId));
+    console.log("Categoria encontrada:", category);
+    return category ? category.name : 'Sem categoria';
   };
 
   return (
@@ -157,57 +188,62 @@ export default function Product() {
               <th>Produto</th>
               <th>Quantidade</th>
               <th>Valor Und</th>
+              <th>Categoria</th>
               <th>Ação</th>
             </tr>
           </thead>
           <tbody>
-            {products.map((product) => (
-              <tr key={product.id}>
-                <td>{product.produto}</td>
-                <td>{product.qnt}</td>
-                <td>R$ {parseFloat(product.valor).toFixed(2)}</td>
-                <td>
-                  <span className="just-icon">
-                    <Button
-                      variant="link"
-                      onClick={() => handleEdit(product)}
-                      disabled={loading}
-                    >
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="16"
-                        height="16"
-                        fill="currentColor"
-                        className="bi bi-pencil"
-                        viewBox="0 0 16 16"
+            {products.map((product) => {
+              console.log("Renderizando produto:", product);
+              return (
+                <tr key={product.id}>
+                  <td>{product.name}</td>
+                  <td>{product.quantity}</td>
+                  <td>R$ {parseFloat(product.value).toFixed(2)}</td>
+                  <td>{getCategoryName(product.categoryId)}</td>
+                  <td>
+                    <span className="just-icon">
+                      <Button
+                        variant="link"
+                        onClick={() => handleEdit(product)}
+                        disabled={loading}
                       >
-                        <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168l10-10zM11.207 2.5L13.5 4.793 14.793 3.5 12.5 1.207 11.207 2.5zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293l6.5-6.5zm-9.761 5.175l-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325z" />
-                      </svg>
-                    </Button>
-                    <Button
-                      variant="link"
-                      onClick={() => handleDelete(product.id)}
-                      disabled={loading}
-                    >
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="16"
-                        height="16"
-                        fill="currentColor"
-                        className="bi bi-trash"
-                        viewBox="0 0 16 16"
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="16"
+                          height="16"
+                          fill="currentColor"
+                          className="bi bi-pencil"
+                          viewBox="0 0 16 16"
+                        >
+                          <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168l10-10zM11.207 2.5L13.5 4.793 14.793 3.5 12.5 1.207 11.207 2.5zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293l6.5-6.5zm-9.761 5.175l-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325z" />
+                        </svg>
+                      </Button>
+                      <Button
+                        variant="link"
+                        onClick={() => handleDelete(product.id)}
+                        disabled={loading}
                       >
-                        <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z" />
-                        <path
-                          fillRule="evenodd"
-                          d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4L4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"
-                        />
-                      </svg>
-                    </Button>
-                  </span>
-                </td>
-              </tr>
-            ))}
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="16"
+                          height="16"
+                          fill="currentColor"
+                          className="bi bi-trash"
+                          viewBox="0 0 16 16"
+                        >
+                          <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z" />
+                          <path
+                            fillRule="evenodd"
+                            d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4L4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"
+                          />
+                        </svg>
+                      </Button>
+                    </span>
+                  </td>
+                </tr>
+              );
+            })}
           </tbody>
         </Table>
       )}
@@ -265,6 +301,28 @@ export default function Product() {
               />
               <Form.Control.Feedback type="invalid">
                 {validationErrors.valor}
+              </Form.Control.Feedback>
+            </Form.Group>
+
+            <Form.Group className="mb-3">
+              <Form.Label>Categoria*</Form.Label>
+              <Form.Select
+                name="categoryId"
+                value={data.categoryId}
+                onChange={handleInputChange}
+                required
+                isInvalid={!!validationErrors.categoryId}
+                disabled={loading}
+              >
+                <option value="">Selecione uma categoria</option>
+                {categories.map(category => (
+                  <option key={category.id} value={category.id}>
+                    {category.name}
+                  </option>
+                ))}
+              </Form.Select>
+              <Form.Control.Feedback type="invalid">
+                {validationErrors.categoryId}
               </Form.Control.Feedback>
             </Form.Group>
 
